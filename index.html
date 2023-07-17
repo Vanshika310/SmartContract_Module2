@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LINK TO METAMASK</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <style>
+        body {
+            background-image: linear-gradient(245deg, rgba(27, 27, 27, 0.04) 0% , rgba(27, 27, 27, 0.04) 93%,rgba(92, 92, 92, 0.04) 93%, rgba(92, 92, 92, 0.04) 100%),linear-gradient(44deg, rgba(11, 11, 11, 0.04) 0%, rgba(11, 11, 11, 0.04) 39%,rgba(186, 186, 186, 0.04) 39%, rgba(186, 186, 186, 0.04) 100%),linear-gradient(134deg, rgba(178, 178, 178, 0.04) 0%, rgba(178, 178, 178, 0.04) 95%,rgba(237, 237, 237, 0.04) 95%, rgba(237, 237, 237, 0.04) 100%),linear-gradient(322deg, rgba(56, 56, 56, 0.04) 0%, rgba(56, 56, 56, 0.04) 58%,rgba(232, 232, 232, 0.04) 58%, rgba(232, 232, 232, 0.04) 100%),linear-gradient(139deg, rgba(51, 51, 51, 0.04) 0%, rgba(51, 51, 51, 0.04) 62%,rgba(35, 35, 35, 0.04) 62%, rgba(35, 35, 35, 0.04) 100%),linear-gradient(252deg, rgba(9, 9, 9, 0.04) 0%, rgba(9, 9, 9, 0.04) 39%,rgba(174, 174, 174, 0.04) 39%, rgba(174, 174, 174, 0.04) 100%),linear-gradient(229deg, rgba(241, 241, 241, 0.04) 0%, rgba(241, 241, 241, 0.04) 2%,rgba(140, 140, 140, 0.04) 2%, rgba(140, 140, 140, 0.04) 100%),linear-gradient(223deg, rgba(82, 82, 82, 0.04) 0%, rgba(82, 82, 82, 0.04) 36%,rgba(229, 229, 229, 0.04) 36%, rgba(229, 229, 229, 0.04) 100%),linear-gradient(90deg, rgb(245, 16, 17),rgb(177, 69, 207)  );
+            height: 100vh;
+            font-size: 23px;
+            text-align: center;
+        }
+        button {
+            cursor: pointer;
+            text-decoration:none ;
+            background-color: transparent;
+            font-size: inherit;
+            font-family: inherit;
+            padding: 0;
+            margin: 0;
+        }
+
+        button:hover {
+            background-color: rgb(105, 198, 235);
+        }
+    </style>
+</head>
+<body>
+    <button onclick ="connectMetamask()" >LINK TO METAMASK</button> <br>
+    <p id="accountArea"></p>
+    <button onclick="connectContract()">CONNECT TO CONTRACT</button> <br>
+    <p id="contractArea"></p>
+    <button onclick="getConnectedSites()">GET CONNECTED SITES</button> <br>
+    <p id="connectedSite"></p>
+    <button onclick="getTransactionAddress()">GET TRANSACTION ADDRESS</button> <br>
+    <p id="transactionAddress"></p>
+    <button onclick="disconnectMetamask()">DISCONNECT METAMASK</button> <br>
+    <p id="disconnectedArea"></p>
+
+    <script>
+        let account;
+        let contract;
+
+        const connectMetamask = async () => {
+            if (window.ethereum !== "undefined") {
+                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                account = accounts[0];
+                document.getElementById("accountArea").innerHTML = account;
+            }
+        }
+
+        const connectContract = async () => {
+            const ABI = [
+                // Contract ABI
+            ];
+            const Address = "0x1aD9647CdDA493c3fF01ab659F47e6175e023008";
+            window.web3 = await new Web3(window.ethereum);
+            contract = await new window.web3.eth.Contract(ABI, Address);
+            document.getElementById("contractArea").innerHTML = "Connected to smart contract";
+        }
+
+        //disconnect Metamask
+        const disconnectMetamask = async () => {
+                await ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] });
+                document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
+        };
+
+        // connected sites to metamask
+        const getConnectedSites = async () => {
+                const permissions = await ethereum.request({ method: "wallet_getPermissions" });
+                const connectedSites = permissions.map((permission) => permission.parentCapability.origin);
+                document.getElementById("connectedSite").innerHTML = "Connected Sites: " + connectedSites.length;
+        };
+
+        // transaction account
+        const getTransactionAddress = async () => {
+                const latestBlock = await window.web3.eth.getBlock("latest");
+                const transactions = latestBlock.transactions;
+                const lastTransaction = transactions[transactions.length - 1];
+                document.getElementById("transactionAddress").innerHTML = "Latest Transaction Address: " + lastTransaction;
+        };
+        
+    </script>
+</body>
+</html>
