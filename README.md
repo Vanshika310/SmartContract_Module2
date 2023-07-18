@@ -14,7 +14,7 @@ Also, we have to access the web application by opening the web browser and navig
 
 ### Server.js
     
-    //Expree framework in JavaScript
+    //Express framework in JavaScript
     const express = require("express");
     const path = require("path");
     const app = express();
@@ -26,6 +26,7 @@ Also, we have to access the web application by opening the web browser and navig
     const server = app.listen(1725);
     const portNumber = server.address().port;
     console.log(`port is running on ${portNumber}`);
+
 This is a simple JavaScript code snippet that demonstrates the usage of the Express framework to create a basic web server. The code sets up an Express application, defines a route for the root URL ("/"), and starts the server.
 
 ## Features
@@ -37,6 +38,20 @@ Static File Serving: The code utilizes the path module to determine the file pat
 Server Initialization: The code initializes the Express application using express() and assigns it to the app constant. It starts the server by calling the listen() method on the app object, specifying the port number 1725.
 
 Console Logging: The code logs a message to the console, displaying the port number on which the server is running.
+
+### Simple.sol
+
+    //SPDX-License-Identifier: MIT
+    
+    pragma solidity >=0.8.7;
+    
+    contract Simple {
+        
+        string public myLord = "Kahna";
+    
+    }
+
+This is a simple smart contract written in Solidity. The contract is named "Simple" and it contains a single string variable called myLord. The contract is licensed under the MIT License. The purpose of this smart contract is to demonstrate a basic example of a Solidity contract. It showcases a simple string variable that can be accessed publicly. You can modify the value of myLord by deploying this contract and interacting with it through transactions.
 
 ### index.js
 
@@ -76,13 +91,13 @@ Console Logging: The code logs a message to the console, displaying the port num
         <p id="connectedSite"></p>
         <button onclick="getTransactionAddress()">GET TRANSACTION ADDRESS</button> <br>
         <p id="transactionAddress"></p>
+        <button onclick="readContract()">READ DATA FROM CONTRACT</button> <br>
+	    <p id="dataArea"></p>
         <button onclick="disconnectMetamask()">DISCONNECT METAMASK</button> <br>
         <p id="disconnectedArea"></p>
     
         <script>
             let account;
-            let contract;
-    
             const connectMetamask = async () => {
                 if (window.ethereum !== "undefined") {
                     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
@@ -113,12 +128,6 @@ Console Logging: The code logs a message to the console, displaying the port num
                 document.getElementById("contractArea").innerHTML = "Connected to smart contract";
             }
     
-            //disconnect Metamask
-            const disconnectMetamask = async () => {
-                    await ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] });
-                    document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
-            };
-    
             // connected sites to metamask
             const getConnectedSites = async () => {
                     const permissions = await ethereum.request({ method: "wallet_getPermissions" });
@@ -133,12 +142,43 @@ Console Logging: The code logs a message to the console, displaying the port num
                     const lastTransaction = transactions[transactions.length - 1];
                     document.getElementById("transactionAddress").innerHTML = "Latest Transaction Address: " + lastTransaction;
             };
+
+            // read data from smart contract
+            const readContract = async () => {
+            const ABI = [
+                {
+                    "inputs": [],
+                    "name": "myLord",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            const Address = "0x0615F81BD8A57ec532AFa07703Dd8B18c1CB2EB6";
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(ABI, Address);
+            const data = await contract.methods.myLord().call();
+            document.getElementById("dataArea").innerHTML = data;
+        };
+
+        //disconnect Metamask
+        const disconnectMetamask = async () => {
+            await ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] });
+            document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
+        };
+
             
         </script>
     </body>
     </html>
 
-This is a simple web page that provides a user interface for interacting with the Metamask browser extension. Metamask allows users to manage their cryptocurrency wallets and interact with blockchain-based applications. The web page offers various functionalities such as connecting to Metamask, connecting to a smart contract, retrieving connected sites, getting the address of the latest transaction, and disconnecting from Metamask.
+This is a simple web page that provides a user interface for interacting with the Metamask browser extension. Metamask allows users to manage their cryptocurrency wallets and interact with blockchain-based applications. The web page offers various functionalities such as connecting to Metamask, connecting to a smart contract, retrieving connected sites, getting the address of the latest transaction, read contract and disconnecting from Metamask.
 
 ### Features
 
@@ -149,6 +189,8 @@ Connect to Contract: The "CONNECT TO CONTRACT" button establishes a connection t
 Get Connected Sites: Clicking the "GET CONNECTED SITES" button retrieves the list of websites or applications that the user has connected to using Metamask. The number of connected sites is displayed in the "connectedSite" section.
 
 Get Transaction Address: The "GET TRANSACTION ADDRESS" button fetches the address of the latest transaction from the Ethereum blockchain. It displays the transaction address in the "transactionAddress" section.
+
+Read Contract: The function is responsible for reading a specific value from a smart contract and displaying it in the HTML page. It defines the contract's ABI (Application Binary Interface) and address. The ABI specifies the structure of the contract, including its functions and variables, while the address represents the location of the deployed contract on the Ethereum network.It creates a new instance of the Web3 object using window.ethereum as the provider. This enables communication with the Ethereum network.It creates a contract instance using the ABI and address, allowing interaction with the specific smart contract.It calls the myLord function from the contract using the contract.methods.myLord().call() syntax. This function is marked as view in the contract, indicating that it only reads data from the blockchain without modifying it.It retrieves the returned value from the contract, representing the myLord variable. It updates the HTML content of an element with the ID "dataArea" to display the retrieved value.
 
 Disconnect Metamask: Clicking the "DISCONNECT METAMASK" button requests permission to disconnect the web page from Metamask. Once disconnected, a message is shown in the "disconnectedArea" section.
 
