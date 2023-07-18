@@ -30,12 +30,8 @@
     <p id="accountArea"></p>
     <button onclick="connectContract()">CONNECT TO CONTRACT</button> <br>
     <p id="contractArea"></p>
-    <button onclick="getConnectedSites()">GET CONNECTED SITES</button> <br>
-    <p id="connectedSite"></p>
-    <button onclick="getTransactionAddress()">GET TRANSACTION ADDRESS</button> <br>
-    <p id="transactionAddress"></p>
     <button onclick="readContract()">READ DATA FROM CONTRACT</button> <br>
-	<p id="dataArea"></p>
+    <p id="dataArea"></p>
     <button onclick="disconnectMetamask()">DISCONNECT METAMASK</button> <br>
     <p id="disconnectedArea"></p>
     <button onclick="checkPermission()">CHECK PERMISSION</button> <br>
@@ -85,22 +81,6 @@
             window.web3 = await new Web3(window.ethereum);
             contract = await new window.web3.eth.Contract(ABI, Address);
             document.getElementById("contractArea").innerHTML = "Connected to smart contract";
-        };
-
-
-        // connected sites to metamask
-        const getConnectedSites = async () => {
-                const permissions = await ethereum.request({ method: "wallet_getPermissions" });
-                const connectedSites = permissions.map((permission) => permission.parentCapability.origin);
-                document.getElementById("connectedSite").innerHTML = "Connected Sites: " + connectedSites.length;
-        };
-
-        // transaction account
-        const getTransactionAddress = async () => {
-                const latestBlock = await window.web3.eth.getBlock("latest");
-                const transactions = latestBlock.transactions;
-                const lastTransaction = transactions[transactions.length - 1];
-                document.getElementById("transactionAddress").innerHTML = "Latest Transaction Address: " + lastTransaction;
         };
 
         // read data from smart contract
