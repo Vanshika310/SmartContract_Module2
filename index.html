@@ -7,7 +7,7 @@
         body {
             background-image: linear-gradient(245deg, rgba(27, 27, 27, 0.04) 0% , rgba(27, 27, 27, 0.04) 93%,rgba(92, 92, 92, 0.04) 93%, rgba(92, 92, 92, 0.04) 100%),linear-gradient(44deg, rgba(11, 11, 11, 0.04) 0%, rgba(11, 11, 11, 0.04) 39%,rgba(186, 186, 186, 0.04) 39%, rgba(186, 186, 186, 0.04) 100%),linear-gradient(134deg, rgba(178, 178, 178, 0.04) 0%, rgba(178, 178, 178, 0.04) 95%,rgba(237, 237, 237, 0.04) 95%, rgba(237, 237, 237, 0.04) 100%),linear-gradient(322deg, rgba(56, 56, 56, 0.04) 0%, rgba(56, 56, 56, 0.04) 58%,rgba(232, 232, 232, 0.04) 58%, rgba(232, 232, 232, 0.04) 100%),linear-gradient(139deg, rgba(51, 51, 51, 0.04) 0%, rgba(51, 51, 51, 0.04) 62%,rgba(35, 35, 35, 0.04) 62%, rgba(35, 35, 35, 0.04) 100%),linear-gradient(252deg, rgba(9, 9, 9, 0.04) 0%, rgba(9, 9, 9, 0.04) 39%,rgba(174, 174, 174, 0.04) 39%, rgba(174, 174, 174, 0.04) 100%),linear-gradient(229deg, rgba(241, 241, 241, 0.04) 0%, rgba(241, 241, 241, 0.04) 2%,rgba(140, 140, 140, 0.04) 2%, rgba(140, 140, 140, 0.04) 100%),linear-gradient(223deg, rgba(82, 82, 82, 0.04) 0%, rgba(82, 82, 82, 0.04) 36%,rgba(229, 229, 229, 0.04) 36%, rgba(229, 229, 229, 0.04) 100%),linear-gradient(90deg, rgb(245, 16, 17),rgb(177, 69, 207)  );
             height: 100vh;
-            font-size: 23px;
+            font-size: 21px;
             text-align: center;
         }
         button {
@@ -38,6 +38,8 @@
 	<p id="dataArea"></p>
     <button onclick="disconnectMetamask()">DISCONNECT METAMASK</button> <br>
     <p id="disconnectedArea"></p>
+    <button onclick="checkPermission()">CHECK PERMISSION</button> <br>
+    <p id="permissionArea"></p>
 
     <script>
         let account;
@@ -64,9 +66,22 @@
                     ],
                     "stateMutability": "view",
                     "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "MyLord",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
                 }
             ];
-            const Address = "0x0615F81BD8A57ec532AFa07703Dd8B18c1CB2EB6";
+            const Address = "0x208F8b839a83362740ed04DbAB4E11318932FE23";
             window.web3 = await new Web3(window.ethereum);
             contract = await new window.web3.eth.Contract(ABI, Address);
             document.getElementById("contractArea").innerHTML = "Connected to smart contract";
@@ -90,32 +105,67 @@
 
         // read data from smart contract
         const readContract = async () => {
-        const ABI = [
-            {
-                "inputs": [],
-                "name": "myLord",
-                "outputs": [
-                    {
-                        "internalType": "string",
-                        "name": "",
-                        "type": "string"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ];
-        const Address = "0x0615F81BD8A57ec532AFa07703Dd8B18c1CB2EB6";
+            const ABI = [
+                {
+                    "inputs": [],
+                    "name": "myLord",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "MyLord",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            const Address = "0x208F8b839a83362740ed04DbAB4E11318932FE23";
             const web3 = new Web3(window.ethereum);
             const contract = new web3.eth.Contract(ABI, Address);
-            const data = await contract.methods.myLord().call();
-            document.getElementById("dataArea").innerHTML = data;
+            const permissions = await ethereum.request({ method: "wallet_getPermissions" });
+            const connectedSites = permissions.map((permission) => permission.parentCapability.origin);
+            const total = connectedSites.length;
+            if (total === 1) {
+                const data = await contract.methods.MyLord().call();
+                document.getElementById("dataArea").innerHTML = data;
+            }
+            else {
+                const data = await contract.methods.myLord().call();
+                document.getElementById("dataArea").innerHTML = data;
+            }
         };
 
         //disconnect Metamask
         const disconnectMetamask = async () => {
                 await ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] });
                 document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
+        };
+
+        // check permission
+        const checkPermission = async () => {
+            const permissionToCheck = "eth_accounts";
+            const permissions = await ethereum.request({ method: "wallet_getPermissions" });
+            const hasPermission = permissions.some((permission) => permission.parentCapability.name === permissionToCheck);
+
+            if (hasPermission) {
+                document.getElementById("permissionArea").innerHTML = "Permission granted";
+            } else {
+                document.getElementById("permissionArea").innerHTML = "Permission not granted";
+            }
         };
 
         
