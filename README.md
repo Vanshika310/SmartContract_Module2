@@ -93,7 +93,19 @@ Console Logging: The code logs a message to the console, displaying the port num
     
             const connectContract = async () => {
                 const ABI = [
-                    // Contract ABI
+                {
+                        "inputs": [],
+                    "name": "myLord",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
                 ];
                 const Address = "0x1aD9647CdDA493c3fF01ab659F47e6175e023008";
                 window.web3 = await new Web3(window.ethereum);
