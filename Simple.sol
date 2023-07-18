@@ -2,8 +2,11 @@
 
 pragma solidity >=0.8.7;
 
-contract Simple {
+contract Simple1 {
     
     string public myLord = "Kahna";
 
+    string public myLord = "Radha Krishna";
+
 }
+
