@@ -34,12 +34,13 @@
     <p id="connectedSite"></p>
     <button onclick="getTransactionAddress()">GET TRANSACTION ADDRESS</button> <br>
     <p id="transactionAddress"></p>
+    <button onclick="readContract()">READ DATA FROM CONTRACT</button> <br>
+	<p id="dataArea"></p>
     <button onclick="disconnectMetamask()">DISCONNECT METAMASK</button> <br>
     <p id="disconnectedArea"></p>
 
     <script>
         let account;
-        let contract;
 
         const connectMetamask = async () => {
             if (window.ethereum !== "undefined") {
@@ -47,14 +48,15 @@
                 account = accounts[0];
                 document.getElementById("accountArea").innerHTML = account;
             }
-        }
+        };
 
         const connectContract = async () => {
             const ABI = [
-                "inputs": [],
+                {
+                    "inputs": [],
                     "name": "myLord",
                     "outputs": [
-                         {
+                        {
                             "internalType": "string",
                             "name": "",
                             "type": "string"
@@ -64,17 +66,12 @@
                     "type": "function"
                 }
             ];
-            const Address = "0x1aD9647CdDA493c3fF01ab659F47e6175e023008";
+            const Address = "0x0615F81BD8A57ec532AFa07703Dd8B18c1CB2EB6";
             window.web3 = await new Web3(window.ethereum);
             contract = await new window.web3.eth.Contract(ABI, Address);
             document.getElementById("contractArea").innerHTML = "Connected to smart contract";
-        }
-
-        //disconnect Metamask
-        const disconnectMetamask = async () => {
-                await ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] });
-                document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
         };
+
 
         // connected sites to metamask
         const getConnectedSites = async () => {
@@ -90,6 +87,37 @@
                 const lastTransaction = transactions[transactions.length - 1];
                 document.getElementById("transactionAddress").innerHTML = "Latest Transaction Address: " + lastTransaction;
         };
+
+        // read data from smart contract
+        const readContract = async () => {
+        const ABI = [
+            {
+                "inputs": [],
+                "name": "myLord",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+        const Address = "0x0615F81BD8A57ec532AFa07703Dd8B18c1CB2EB6";
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(ABI, Address);
+            const data = await contract.methods.myLord().call();
+            document.getElementById("dataArea").innerHTML = data;
+        };
+
+        //disconnect Metamask
+        const disconnectMetamask = async () => {
+                await ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] });
+                document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
+        };
+
         
     </script>
 </body>
