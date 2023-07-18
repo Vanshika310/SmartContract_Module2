@@ -6,7 +6,7 @@ contract Simple1 {
     
     string public myLord = "Kahna";
 
-    string public myLord = "Radha Krishna";
+    string public MyLord = "Radha Krishna";
 
 }
 
