@@ -30,12 +30,12 @@
     <p id="accountArea"></p>
     <button onclick="connectContract()">CONNECT TO CONTRACT</button> <br>
     <p id="contractArea"></p>
-    <button onclick="readContract()">READ DATA FROM CONTRACT</button> <br>
-    <p id="dataArea"></p>
+    <button onclick="setPermission()">SET PERMISSION</button> <br>
+    <p id="permissionArea"></p>
+    <button onclick="checkPermission()">CHECK PERMISSION</button> <br>
+    <p id="checkPermissionArea"></p>
     <button onclick="disconnectMetamask()">DISCONNECT METAMASK</button> <br>
     <p id="disconnectedArea"></p>
-    <button onclick="checkPermission()">CHECK PERMISSION</button> <br>
-    <p id="permissionArea"></p>
 
     <script>
         let account;
@@ -52,82 +52,232 @@
             const ABI = [
                 {
                     "inputs": [],
-                    "name": "myLord",
-                    "outputs": [
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
                         {
-                            "internalType": "string",
-                            "name": "",
-                            "type": "string"
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "bool",
+                            "name": "hasPermission",
+                            "type": "bool"
                         }
                     ],
-                    "stateMutability": "view",
+                    "name": "PermissionSet",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "hasPermission",
+                            "type": "bool"
+                        }
+                    ],
+                    "name": "setPermissionForAddress",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
                     "type": "function"
                 },
                 {
-                    "inputs": [],
-                    "name": "MyLord",
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "hasPermissionForAddress",
                     "outputs": [
                         {
-                            "internalType": "string",
+                            "internalType": "bool",
                             "name": "",
-                            "type": "string"
+                            "type": "bool"
                         }
                     ],
                     "stateMutability": "view",
                     "type": "function"
                 }
             ];
-            const Address = "0x208F8b839a83362740ed04DbAB4E11318932FE23";
+            
+            const Address = "0x1A9bE1E97233b3eeAa47f40E5283EC3F95AB22d0";
             window.web3 = await new Web3(window.ethereum);
             contract = await new window.web3.eth.Contract(ABI, Address);
             document.getElementById("contractArea").innerHTML = "Connected to smart contract";
         };
 
-        // read data from smart contract
-        const readContract = async () => {
+        const setPermission = async () => {
+            const targetAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; // Replace with the address you want to set permission for
+            const hasPermission = true; // Set the permission value (true or false) as desired
             const ABI = [
+                        
                 {
                     "inputs": [],
-                    "name": "myLord",
-                    "outputs": [
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
                         {
-                            "internalType": "string",
-                            "name": "",
-                            "type": "string"
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "bool",
+                            "name": "hasPermission",
+                            "type": "bool"
                         }
                     ],
-                    "stateMutability": "view",
+                    "name": "PermissionSet",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "hasPermission",
+                            "type": "bool"
+                        }
+                    ],
+                    "name": "setPermissionForAddress",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
                     "type": "function"
                 },
                 {
-                    "inputs": [],
-                    "name": "MyLord",
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "hasPermissionForAddress",
                     "outputs": [
                         {
-                            "internalType": "string",
+                            "internalType": "bool",
                             "name": "",
-                            "type": "string"
+                            "type": "bool"
                         }
                     ],
                     "stateMutability": "view",
                     "type": "function"
                 }
             ];
-            const Address = "0x208F8b839a83362740ed04DbAB4E11318932FE23";
-            const web3 = new Web3(window.ethereum);
-            const contract = new web3.eth.Contract(ABI, Address);
-            const permissions = await ethereum.request({ method: "wallet_getPermissions" });
-            const connectedSites = permissions.map((permission) => permission.parentCapability.origin);
-            const total = connectedSites.length;
-            if (total === 1) {
-                const data = await contract.methods.MyLord().call();
-                document.getElementById("dataArea").innerHTML = data;
-            }
-            else {
-                const data = await contract.methods.myLord().call();
-                document.getElementById("dataArea").innerHTML = data;
+            const Address = "0x1A9bE1E97233b3eeAa47f40E5283EC3F95AB22d0";
+            window.web3 = await new Web3(window.ethereum);
+            contract = await new window.web3.eth.Contract(ABI, Address);
+
+            try {
+                await contract.methods.setPermissionForAddress(targetAddress, hasPermission).send({ from: account });
+                document.getElementById("permissionArea").innerHTML = "Permission set successfully";
+            } catch (error) {
+                console.error(error);
+                document.getElementById("permissionArea").innerHTML = "Error setting permission";
             }
         };
+
+        const checkPermission = async () => {
+            const targetAddress = "0x24ea0CB1F6Ece8fAC933f64E8f64795eDF3DEa86"; // Replace with the address you want to check permission for
+            const ABI = [
+            
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "bool",
+                            "name": "hasPermission",
+                            "type": "bool"
+                        }
+                    ],
+                    "name": "PermissionSet",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "hasPermission",
+                            "type": "bool"
+                        }
+                    ],
+                    "name": "setPermissionForAddress",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "hasPermissionForAddress",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            const Address = "0x1A9bE1E97233b3eeAa47f40E5283EC3F95AB22d0";
+            window.web3 = await new Web3(window.ethereum);
+            contract = await new window.web3.eth.Contract(ABI, Address);
+
+            try {
+                const hasPermission = await contract.methods.checkPermissionForAddress(targetAddress).call();
+                document.getElementById("checkPermissionArea").innerHTML = `Permission: ${hasPermission}`;
+            } catch (error) {
+                console.error(error);
+                document.getElementById("checkPermissionArea").innerHTML = "Error checking permission";
+            }
+        };
+
 
         //disconnect Metamask
         const disconnectMetamask = async () => {
@@ -135,18 +285,6 @@
                 document.getElementById("disconnectedArea").innerHTML = "Metamask disconnected";
         };
 
-        // check permission
-        const checkPermission = async () => {
-            const permissionToCheck = "eth_accounts";
-            const permissions = await ethereum.request({ method: "wallet_getPermissions" });
-            const hasPermission = permissions.some((permission) => permission.parentCapability.name === permissionToCheck);
-
-            if (hasPermission) {
-                document.getElementById("permissionArea").innerHTML = "Permission granted";
-            } else {
-                document.getElementById("permissionArea").innerHTML = "Permission not granted";
-            }
-        };
 
         
     </script>
