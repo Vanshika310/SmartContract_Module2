@@ -168,6 +168,25 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	                            "internalType": "address",
 	                            "name": "account",
 	                            "type": "address"
+	                        }
+	                    ],    
+	                    "name": "checkPermissionForAddress",
+	                    "outputs": [
+	                        {
+	                            "internalType": "bool",
+	                            "name": "",
+	                            "type": "bool"
+	                        }
+	                    ],
+	                    "stateMutability": "view",
+	                    "type": "function"
+	                },
+	                {
+	                    "inputs": [
+	                        {
+	                            "internalType": "address",
+	                            "name": "account",
+	                            "type": "address"
 	                        },
 	                        {
 	                            "internalType": "bool",
@@ -179,25 +198,6 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	                    "outputs": [],
 	                    "stateMutability": "nonpayable",
 	                    "type": "function"
-	                },
-	                {
-	                    "inputs": [
-	                        {
-	                            "internalType": "address",
-	                            "name": "account",
-	                            "type": "address"
-	                        }
-	                    ],
-	                    "name": "hasPermissionForAddress",
-	                    "outputs": [
-	                        {
-	                            "internalType": "bool",
-	                            "name": "",
-	                            "type": "bool"
-	                        }
-	                    ],
-	                    "stateMutability": "view",
-	                    "type": "function"
 	                }
 	            ];
 	            
@@ -208,7 +208,8 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	        };
 	
 	        const setPermission = async () => {
-	            const targetAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; const hasPermission = true; 
+	            const targetAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; 
+	            const hasPermission = false; 
 	            const ABI = [
 	                        
 	                {
@@ -241,6 +242,25 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	                            "internalType": "address",
 	                            "name": "account",
 	                            "type": "address"
+	                        }
+	                        ],    
+	                    "name": "checkPermissionForAddress",
+	                    "outputs": [
+	                        {
+	                            "internalType": "bool",
+	                            "name": "",
+	                            "type": "bool"
+	                        }
+	                    ],
+	                    "stateMutability": "view",
+	                    "type": "function"
+	                },
+	                {
+	                    "inputs": [
+	                        {
+	                            "internalType": "address",
+	                            "name": "account",
+	                            "type": "address"
 	                        },
 	                        {
 	                            "internalType": "bool",
@@ -251,25 +271,6 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	                    "name": "setPermissionForAddress",
 	                    "outputs": [],
 	                    "stateMutability": "nonpayable",
-	                    "type": "function"
-	                },
-	                {
-	                    "inputs": [
-	                        {
-	                            "internalType": "address",
-	                            "name": "account",
-	                            "type": "address"
-	                        }
-	                    ],
-	                    "name": "hasPermissionForAddress",
-	                    "outputs": [
-	                        {
-	                            "internalType": "bool",
-	                            "name": "",
-	                            "type": "bool"
-	                        }
-	                    ],
-	                    "stateMutability": "view",
 	                    "type": "function"
 	                }
 	            ];
@@ -287,7 +288,7 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	        };
 	
 	        const checkPermission = async () => {
-	            const targetAddress = "0x24ea0CB1F6Ece8fAC933f64E8f64795eDF3DEa86";
+	            const targetAddress = "0x24ea0CB1F6Ece8fAC933f64E8f64795eDF3DEa86"; // Replace with the address you want to check permission for
 	            const ABI = [
 	            
 	                {
@@ -320,6 +321,25 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	                            "internalType": "address",
 	                            "name": "account",
 	                            "type": "address"
+	                        }
+	                        ],    
+	                    "name": "checkPermissionForAddress",
+	                    "outputs": [
+	                        {
+	                            "internalType": "bool",
+	                            "name": "",
+	                            "type": "bool"
+	                        }
+	                    ],
+	                    "stateMutability": "view",
+	                    "type": "function"
+	                },
+	                {
+	                    "inputs": [
+	                        {
+	                            "internalType": "address",
+	                            "name": "account",
+	                            "type": "address"
 	                        },
 	                        {
 	                            "internalType": "bool",
@@ -330,25 +350,6 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	                    "name": "setPermissionForAddress",
 	                    "outputs": [],
 	                    "stateMutability": "nonpayable",
-	                    "type": "function"
-	                },
-	                {
-	                    "inputs": [
-	                        {
-	                            "internalType": "address",
-	                            "name": "account",
-	                            "type": "address"
-	                        }
-	                    ],
-	                    "name": "hasPermissionForAddress",
-	                    "outputs": [
-	                        {
-	                            "internalType": "bool",
-	                            "name": "",
-	                            "type": "bool"
-	                        }
-	                    ],
-	                    "stateMutability": "view",
 	                    "type": "function"
 	                }
 	            ];
@@ -377,6 +378,7 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	    </script>
 	</body>
 	</html>
+
 
 This HTML document demonstrates the integration of the Metamask wallet with a smart contract. It provides a user interface with buttons to connect Metamask, connect to the smart contract, set permission, check permission, and disconnect Metamask.
 
