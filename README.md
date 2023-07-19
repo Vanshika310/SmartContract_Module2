@@ -41,7 +41,7 @@ This project demonstrates the use of the Express framework to create a basic web
 	    event PermissionSet(address indexed account, bool hasPermission);
 	
 	    constructor() {
-	        permissions[msg.sender] = true; // Set contract deployer's address as initially having permission
+	        permissions[msg.sender] = true; 
 	    }
 	
 	    modifier onlyOwner() {
@@ -208,8 +208,7 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	        };
 	
 	        const setPermission = async () => {
-	            const targetAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; // Replace with the address you want to set permission for
-	            const hasPermission = true; // Set the permission value (true or false) as desired
+	            const targetAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; const hasPermission = true; 
 	            const ABI = [
 	                        
 	                {
@@ -288,7 +287,7 @@ b) hasPermission: The permission status (true if the address is granted permissi
 	        };
 	
 	        const checkPermission = async () => {
-	            const targetAddress = "0x24ea0CB1F6Ece8fAC933f64E8f64795eDF3DEa86"; // Replace with the address you want to check permission for
+	            const targetAddress = "0x24ea0CB1F6Ece8fAC933f64E8f64795eDF3DEa86";
 	            const ABI = [
 	            
 	                {
